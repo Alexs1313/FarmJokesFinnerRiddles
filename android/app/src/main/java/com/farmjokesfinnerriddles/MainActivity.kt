@@ -1,4 +1,4 @@
-package com.farmjokesfinnerriddles
+package com.golden.finner.riddles.jokes
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

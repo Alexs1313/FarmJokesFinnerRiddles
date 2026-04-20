@@ -13,76 +13,86 @@ av.addListener(() => {
 });
 
 const farmjkesfinnriddlsLoaderHTML = `
-  <!DOCTYPE html>
-    <html>
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <style>
-          body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: transparent;
-          }
+   <!DOCTYPE html>
+  <html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: transparent;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
 
-          .spinner {
-            width: 60px;
-            height: 60px;
-            position: relative;
-          }
+      .loader {
+        width: 84px;
+        aspect-ratio: 1;
+        background:
+          linear-gradient(#ff4500 0 0) left/50% 100% no-repeat,
+          conic-gradient(
+            from -90deg at 32px 9.47px,
+            #fff8dc 135deg,
+            #8b0000 0 270deg,
+            #ffa500 0
+          );
+        background-blend-mode: multiply;
+        -webkit-mask: linear-gradient(
+            to bottom right,
+            transparent 8px,
+            black 0 52px,
+            transparent 0
+          ),
+          conic-gradient(from -90deg at right 6px bottom 6px, black 90deg, transparent 0);
+        mask: linear-gradient(
+            to bottom right,
+            transparent 8px,
+            black 0 52px,
+            transparent 0
+          ),
+          conic-gradient(from -90deg at right 6px bottom 6px, black 90deg, transparent 0);
+        background-size: 50% 50%;
+        -webkit-mask-size: 50% 50%;
+        mask-size: 50% 50%;
+        -webkit-mask-composite: source-in;
+        mask-composite: intersect;
+        animation: l9 1.8s infinite cubic-bezier(0.5, 0.2, 0.5, 1);
+        box-shadow: 0 0 15px rgba(255, 69, 0, 0.6);
+        transform: perspective(1000px) rotateY(15deg);
+      }
 
-          .spinner .dot {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            justify-content: center;
-            animation: spin 2s infinite linear;
-          }
-
-          .spinner .dot::after {
-            content: "";
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background-color: rgb(12, 180, 231);
-          }
-
-          @keyframes spin {
-            to {
-              transform: rotate(360deg);
-            }
-          }
-
-          .spinner .dot:nth-child(2) {
-            animation-delay: 0.1s;
-          }
-
-          .spinner .dot:nth-child(3) {
-            animation-delay: 0.2s;
-          }
-
-          .spinner .dot:nth-child(4) {
-            animation-delay: 0.3s;
-          }
-
-          .spinner .dot:nth-child(5) {
-            animation-delay: 0.4s;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="spinner">
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-        </div>
-      </body>
-    </html>
+      @keyframes l9 {
+        0% {
+          background-position: 0% 0%, 0 0;
+          transform: perspective(1000px) rotateY(15deg) scale(1);
+          box-shadow: 0 0 15px rgba(255, 69, 0, 0.6);
+        }
+        25% {
+          background-position: 100% 0%, 0 0;
+        }
+        50% {
+          background-position: 100% 100%, 0 0;
+          transform: perspective(1000px) rotateY(15deg) scale(1.08);
+          box-shadow: 0 0 25px rgba(255, 69, 0, 0.8);
+        }
+        75% {
+          background-position: 0% 100%, 0 0;
+        }
+        100% {
+          background-position: 0% 0%, 0 0;
+          transform: perspective(1000px) rotateY(15deg) scale(1);
+          box-shadow: 0 0 15px rgba(255, 69, 0, 0.6);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loader"></div>
+  </body>
+  </html>
 `;
 
 const Farmjkesfinnriddlsload = () => {

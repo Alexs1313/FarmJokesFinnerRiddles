@@ -1,4 +1,4 @@
-package com.farmjokesfinnerriddles
+package com.golden.finner.riddles.jokes
 
 import android.app.Application
 import com.facebook.react.PackageList
