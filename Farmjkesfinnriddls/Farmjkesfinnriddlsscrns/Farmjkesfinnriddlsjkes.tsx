@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 
 import {useFocusEffect} from '@react-navigation/native';
+import {farmjkesfinnriddlsjkesFavoritesStorageKey} from '../Farmjkesfinnriddlsdata/farmjkesfinnriddlsjokes';
 
 type farmjkesfinnriddlsJokeGroup = {
   id: string;
@@ -27,9 +28,6 @@ type farmjkesfinnriddlsJokesCategory = {
   previewImages: ImageSourcePropType[];
   groups: farmjkesfinnriddlsJokeGroup[];
 };
-
-const farmjkesfinnriddlsjkesFavoritesStorageKey =
-  'farmjkesfinnriddls_jokes_favorites_v1';
 
 const farmjkesfinnriddlsjkesCategories: farmjkesfinnriddlsJokesCategory[] = [
   {
@@ -314,6 +312,22 @@ const Farmjkesfinnriddlsjkes = () => {
     setFarmjkesfinnriddlsjkesFavoritesHydrated,
   ] = useState(false);
 
+  const farmjkesfinnriddlsjkesHydrateFavorites = useCallback(async () => {
+    try {
+      const farmjkesfinnriddlsjkesRaw = await AsyncStorage.getItem(
+        farmjkesfinnriddlsjkesFavoritesStorageKey,
+      );
+      const farmjkesfinnriddlsjkesList = farmjkesfinnriddlsjkesRaw
+        ? (JSON.parse(farmjkesfinnriddlsjkesRaw) as string[])
+        : [];
+      setFarmjkesfinnriddlsjkesFavorites(new Set(farmjkesfinnriddlsjkesList));
+    } catch {
+      // ignore storage failures
+    } finally {
+      setFarmjkesfinnriddlsjkesFavoritesHydrated(true);
+    }
+  }, []);
+
   const farmjkesfinnriddlsjkesSelectedCategory = useMemo(() => {
     if (!farmjkesfinnriddlsjkesSelectedCategoryId) {
       return null;
@@ -326,31 +340,15 @@ const Farmjkesfinnriddlsjkes = () => {
   }, [farmjkesfinnriddlsjkesSelectedCategoryId]);
 
   useEffect(() => {
-    let farmjkesfinnriddlsjkesMounted = true;
-    (async () => {
-      try {
-        const farmjkesfinnriddlsjkesRaw = await AsyncStorage.getItem(
-          farmjkesfinnriddlsjkesFavoritesStorageKey,
-        );
-        if (!farmjkesfinnriddlsjkesMounted) {
-          return;
-        }
-        const farmjkesfinnriddlsjkesList = farmjkesfinnriddlsjkesRaw
-          ? (JSON.parse(farmjkesfinnriddlsjkesRaw) as string[])
-          : [];
-        setFarmjkesfinnriddlsjkesFavorites(new Set(farmjkesfinnriddlsjkesList));
-      } catch {
-        console.log('error');
-      } finally {
-        if (farmjkesfinnriddlsjkesMounted) {
-          setFarmjkesfinnriddlsjkesFavoritesHydrated(true);
-        }
-      }
-    })();
-    return () => {
-      farmjkesfinnriddlsjkesMounted = false;
-    };
-  }, []);
+    farmjkesfinnriddlsjkesHydrateFavorites();
+  }, [farmjkesfinnriddlsjkesHydrateFavorites]);
+
+  useFocusEffect(
+    useCallback(() => {
+      // keep favorites in sync after deleting/clearing on other screens
+      farmjkesfinnriddlsjkesHydrateFavorites();
+    }, [farmjkesfinnriddlsjkesHydrateFavorites]),
+  );
 
   const farmjkesfinnriddlsjkesPersistFavorites = async (
     farmjkesfinnriddlsNext: Set<string>,

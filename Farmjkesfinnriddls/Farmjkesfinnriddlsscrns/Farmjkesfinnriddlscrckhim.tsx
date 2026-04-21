@@ -79,7 +79,7 @@ const Farmjkesfinnriddlscrckhim = () => {
 
   useFocusEffect(
     useCallback(() => {
-      setFarmjkesfinnriddlscrckhimSent(true);
+      setFarmjkesfinnriddlscrckhimSent(false);
       setFarmjkesfinnriddlscrckhimText('');
     }, []),
   );
@@ -187,7 +187,11 @@ const Farmjkesfinnriddlscrckhim = () => {
 
           <View style={styles.farmjkesfinnriddlscrckhimSpeech}>
             <Text style={styles.farmjkesfinnriddlscrckhimSpeechText}>
-              {farmjkesfinnriddlscrckhimReaction.message}
+              {farmjkesfinnriddlscrckhimSent
+                ? farmjkesfinnriddlscrckhimReaction.message?.trim()
+                  ? farmjkesfinnriddlscrckhimReaction.message
+                  : 'Type a joke to crack me up!'
+                : 'Type a joke to crack me up!'}
             </Text>
           </View>
 
