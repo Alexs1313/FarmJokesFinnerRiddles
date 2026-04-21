@@ -1,19 +1,19 @@
 workflows:
   ios-workflow:
-    name: 'Golden Finner: Riddles Jokes'
+    name: 'Golden Jokes: Riddles Humor'
     max_build_duration: 120
     instance_type: mac_mini_m2
     integrations:
-      app_store_connect: RiddlesJksAPIKey
+      app_store_connect: JokesRiddlsAPIKey
     environment:
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: com.djuejfhf.ddkalas
+        bundle_identifier: com.fhdlwpr.gjutr
       vars:
-        BUNDLE_ID: com.djuejfhf.ddkalas
+        BUNDLE_ID: com.fhdlwpr.gjutr
         XCODE_WORKSPACE: FarmJokesFinnerRiddles.xcworkspace
         XCODE_SCHEME: FarmJokesFinnerRiddles
-        APP_STORE_APPLE_ID: 6762737954
+        APP_STORE_APPLE_ID: 6762772160
     scripts:
       - name: Install npm dependencies
         script: |
