@@ -309,10 +309,19 @@ const Farmjkesfinnriddlsjkes = () => {
   ] = useState<farmjkesfinnriddlsJokesCategory['id'] | null>(null);
   const [farmjkesfinnriddlsjkesFavorites, setFarmjkesfinnriddlsjkesFavorites] =
     useState<Set<string>>(new Set());
-  const [
-    farmjkesfinnriddlsjkesFavoritesHydrated,
-    setFarmjkesfinnriddlsjkesFavoritesHydrated,
-  ] = useState(false);
+  const farmjkesfinnriddlsjkesHydrateFavorites = useCallback(async () => {
+    try {
+      const farmjkesfinnriddlsjkesRaw = await AsyncStorage.getItem(
+        farmjkesfinnriddlsjkesFavoritesStorageKey,
+      );
+      const farmjkesfinnriddlsjkesList = farmjkesfinnriddlsjkesRaw
+        ? (JSON.parse(farmjkesfinnriddlsjkesRaw) as string[])
+        : [];
+      setFarmjkesfinnriddlsjkesFavorites(new Set(farmjkesfinnriddlsjkesList));
+    } catch {
+      console.log('error');
+    }
+  }, []);
 
   const farmjkesfinnriddlsjkesSelectedCategory = useMemo(() => {
     if (!farmjkesfinnriddlsjkesSelectedCategoryId) {
@@ -341,10 +350,6 @@ const Farmjkesfinnriddlsjkes = () => {
         setFarmjkesfinnriddlsjkesFavorites(new Set(farmjkesfinnriddlsjkesList));
       } catch {
         console.log('error');
-      } finally {
-        if (farmjkesfinnriddlsjkesMounted) {
-          setFarmjkesfinnriddlsjkesFavoritesHydrated(true);
-        }
       }
     })();
     return () => {
@@ -356,9 +361,6 @@ const Farmjkesfinnriddlsjkes = () => {
     farmjkesfinnriddlsNext: Set<string>,
   ) => {
     setFarmjkesfinnriddlsjkesFavorites(farmjkesfinnriddlsNext);
-    if (!farmjkesfinnriddlsjkesFavoritesHydrated) {
-      return;
-    }
     try {
       await AsyncStorage.setItem(
         farmjkesfinnriddlsjkesFavoritesStorageKey,
@@ -383,10 +385,11 @@ const Farmjkesfinnriddlsjkes = () => {
 
   useFocusEffect(
     useCallback(() => {
+      farmjkesfinnriddlsjkesHydrateFavorites();
       return () => {
         setFarmjkesfinnriddlsjkesSelectedCategoryId(null);
       };
-    }, []),
+    }, [farmjkesfinnriddlsjkesHydrateFavorites]),
   );
 
   const farmjkesfinnriddlsjkesShare = async (

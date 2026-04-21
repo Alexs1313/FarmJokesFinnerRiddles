@@ -32,10 +32,6 @@ const Farmjkesfinnriddlssavd = () => {
 
   const [farmjkesfinnriddlssavdFavorites, setFarmjkesfinnriddlssavdFavorites] =
     useState<Set<string>>(new Set());
-  const [
-    farmjkesfinnriddlssavdFavoritesHydrated,
-    setFarmjkesfinnriddlssavdFavoritesHydrated,
-  ] = useState(false);
   const [farmjkesfinnriddlssavdClearOpen, setFarmjkesfinnriddlssavdClearOpen] =
     useState(false);
 
@@ -50,8 +46,6 @@ const Farmjkesfinnriddlssavd = () => {
       setFarmjkesfinnriddlssavdFavorites(new Set(farmjkesfinnriddlssavdList));
     } catch {
       // ignore storage failures
-    } finally {
-      setFarmjkesfinnriddlssavdFavoritesHydrated(true);
     }
   };
 
@@ -69,9 +63,6 @@ const Farmjkesfinnriddlssavd = () => {
     farmjkesfinnriddlsNext: Set<string>,
   ) => {
     setFarmjkesfinnriddlssavdFavorites(farmjkesfinnriddlsNext);
-    if (!farmjkesfinnriddlssavdFavoritesHydrated) {
-      return;
-    }
     try {
       await AsyncStorage.setItem(
         farmjkesfinnriddlsjkesFavoritesStorageKey,
